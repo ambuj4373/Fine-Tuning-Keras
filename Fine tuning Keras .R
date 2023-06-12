@@ -1,30 +1,32 @@
 # Building a Diabetes Classification Model with Keras and R
-# --------------------------------------------------------
+#For the dataset we have used PIMA Indian Diabetic Database. 
+#Link to the dataset- https://www.kaggle.com/datasets/uciml/pima-indians-diabetes-database
+# ----------------------------------------------------------------------------------------
 
 # Step 1: Load the required libraries
 library(keras)
 library(caret)
 
 # Step 2: Read the dataset
-df <- read.csv("~/Desktop/diabetes 2.csv")
+df <- read.csv("~/Desktop/diabetes 2.csv") #The local path where data is stored.
 
 # Step 3: Split the dataset into features and target variable
 features <- df[, 1:8] # Extract the features from the dataset
 target <- df[, 9] # Extract the target variable from the dataset
 
-# Step 4: Scale the features
-scaled_features <- scale(features) # Standardize the features by scaling them
+# Step 4: Scale the features- Scaling means to transform the dataset on the scale like 1-100 or 0-1
+scaled_features <- scale(features) # Standardize the features by scaling them, in this case we have scaledin the range of -1,+1.
 
 # Step 5: Split the data into train and test sets
-set.seed(123) # Set a seed for reproducibility
-train_indices <- createDataPartition(target, p = 0.7, list = FALSE) # Split the indices for training set
+set.seed(123) # Set a seed for reproducibility- Set.seed reproduces the sequence of random numbers
+train_indices <- createDataPartition(target, p = 0.7, list = FALSE) # Split the indices for training set in the ratio of 70:30.
 train_features <- scaled_features[train_indices, ] # Extract the scaled features for training set
 train_target <- target[train_indices] # Extract the target variable for training set
 test_features <- scaled_features[-train_indices, ] # Extract the scaled features for test set
 test_target <- target[-train_indices] # Extract the target variable for test set
 
 # Step 6: Define the model architecture
-model <- keras_model_sequential() # Create a sequential model
+model <- keras_model_sequential() # Create a sequential model- Sequential model allows us to specify Neural Network from Input to Output, passing through different layers.
 model %>%
   # Add a dense layer with 32 units and ReLU activation function
   layer_dense(units = 32, activation = "relu", input_shape = c(8)) %>%
